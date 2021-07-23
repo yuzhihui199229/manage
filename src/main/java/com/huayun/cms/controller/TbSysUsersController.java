@@ -3,6 +3,7 @@ package com.huayun.cms.controller;
 
 import com.huayun.cms.entity.Result;
 import com.huayun.cms.entity.Status;
+import com.huayun.cms.service.ITbLoginInfoService;
 import com.huayun.cms.service.ITbSysUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,8 @@ public class TbSysUsersController {
     @Autowired
     private ITbSysUsersService tbSysUsersService;
 
-    @PostMapping("/login")
-    public Result login(@RequestBody Map<String, Object> map) {
-        return tbSysUsersService.login(map) != null ? new Result(Status.SUCCESS.getCode(), Status.SUCCESS.getMessage()) : new Result(Status.SUCCESS.getCode(), Status.ERROR.getMessage());
+    @PostMapping("/selectList")
+    public Result selectList(@RequestBody Map<String, Object> map) {
+        return new Result(Status.SUCCESS.getCode(), Status.SUCCESS.getMessage(), tbSysUsersService.selectList(map));
     }
 }

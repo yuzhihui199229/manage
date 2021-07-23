@@ -36,6 +36,4 @@ public class TbSysUsers implements Serializable {
      */
     @TableField("USER_ROLE")
     private Integer userRole;
-
-
 }
