@@ -1,6 +1,8 @@
 package com.huayun.cms.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.huayun.cms.entity.TbDataSync;
+import com.huayun.cms.entity.TbSysUsers;
 import com.huayun.cms.mapper.TbDataSyncMapper;
 import com.huayun.cms.service.ITbDataSyncService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -28,7 +30,10 @@ public class TbDataSyncServiceImpl extends ServiceImpl<TbDataSyncMapper, TbDataS
     private TbDataSyncMapper tbDataSyncMapper;
 
     public List<TbDataSync> selectList() {
-        return tbDataSyncMapper.selectList(null);
+        LambdaQueryWrapper<TbDataSync> wrapper = new LambdaQueryWrapper();
+        wrapper.select(TbDataSync::getCenter,TbDataSync::getSysName,TbDataSync::getSyncDate,
+                TbDataSync::getSyncTime,TbDataSync::getDbUser,TbDataSync::getDbConn);
+        return tbDataSyncMapper.selectList(wrapper);
     }
 
     public int syncUserInfo(Map<String, Object> map) {
