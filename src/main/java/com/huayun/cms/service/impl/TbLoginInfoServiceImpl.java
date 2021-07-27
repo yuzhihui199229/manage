@@ -38,6 +38,9 @@ public class TbLoginInfoServiceImpl extends ServiceImpl<TbLoginInfoMapper, TbLog
         Object loginDate = map.get("loginDate");
         if (loginDate != null && !"".equals(loginDate))
             wrapper.eq(TbLoginInfo::getLoginDate, loginDate);
+        Object userName = map.get("userName");
+        if (userName != null && !"".equals(userName))
+            wrapper.eq(TbLoginInfo::getUserName, userName);
         return tbLoginInfoMapper.selectList(wrapper);
     }
 }
