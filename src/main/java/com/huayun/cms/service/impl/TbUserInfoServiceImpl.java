@@ -39,26 +39,20 @@ public class TbUserInfoServiceImpl extends ServiceImpl<TbUserInfoMapper, TbUserI
         Object startDate = map.get("startDate");
         Object endDate = map.get("endDate");
         Object userStatus = map.get("userStatus");
-        if (userStatus != null && !"".equals(userStatus))
-        {
+        if (userStatus != null && !"".equals(userStatus)) {
             wrapper.eq(TbUserInfo::getUserStatus, userStatus);
-            if("0".equals(userStatus) && endDate != null && !"".equals(endDate))
-            {
+            if ("0".equals(userStatus) && endDate != null && !"".equals(endDate)) {
                 wrapper.gt(TbUserInfo::getEndDate, endDate);
                 wrapper.lt(TbUserInfo::getStartDate, endDate);
-            }
-            else if("1".equals(userStatus))
-            {
-                if(endDate != null && !"".equals(endDate))
+            } else if ("1".equals(userStatus)) {
+                if (endDate != null && !"".equals(endDate))
                     wrapper.le(TbUserInfo::getEndDate, endDate);
-                if(startDate != null && !"".equals(startDate))
+                if (startDate != null && !"".equals(startDate))
                     wrapper.ge(TbUserInfo::getEndDate, startDate);
-            }
-            else if("2".equals(userStatus))
-            {
-                if(endDate != null && !"".equals(endDate))
+            } else if ("2".equals(userStatus)) {
+                if (endDate != null && !"".equals(endDate))
                     wrapper.le(TbUserInfo::getStartDate, endDate);
-                if(startDate != null && !"".equals(startDate))
+                if (startDate != null && !"".equals(startDate))
                     wrapper.ge(TbUserInfo::getStartDate, startDate);
             }
         }
