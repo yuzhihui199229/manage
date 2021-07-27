@@ -9,6 +9,7 @@ import com.huayun.cms.utils.CodeDigest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,11 +26,11 @@ public class TbSysUsersServiceImpl extends ServiceImpl<TbSysUsersMapper, TbSysUs
 private TbSysUsersMapper tbSysUsersMapper;
 
     @Override
-    public TbSysUsers login(Map<String, Object> map) {
+    public List<TbSysUsers> selectList(Map<String, Object> map) {
         LambdaQueryWrapper<TbSysUsers> wrapper=new LambdaQueryWrapper();
         String password = CodeDigest.encryption((String) map.get("userPassword"));
         wrapper.eq(TbSysUsers::getUserName, map.get("userName"))
                 .eq(TbSysUsers::getUserPassword, password);
-        return tbSysUsersMapper.selectOne(wrapper);
+        return tbSysUsersMapper.selectList(wrapper);
     }
 }

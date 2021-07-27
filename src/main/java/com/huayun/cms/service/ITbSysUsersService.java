@@ -3,6 +3,7 @@ package com.huayun.cms.service;
 import com.huayun.cms.entity.TbSysUsers;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,5 +15,5 @@ import java.util.Map;
  * @since 2021-07-21
  */
 public interface ITbSysUsersService extends IService<TbSysUsers> {
-    TbSysUsers login(Map<String, Object> map);
+    List<TbSysUsers> selectList(Map<String, Object> map);
 }

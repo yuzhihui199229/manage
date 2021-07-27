@@ -33,18 +33,36 @@ public class TbUserInfoServiceImpl extends ServiceImpl<TbUserInfoMapper, TbUserI
         Object dataPermission = map.get("dataPermission");
         if (dataPermission != null && !"".equals(dataPermission))
             wrapper.eq(TbUserInfo::getDataPermission, dataPermission);
-        Object startDate = map.get("startDate");
-        if (startDate != null && !"".equals(startDate))
-            wrapper.eq(TbUserInfo::getStartDate, startDate);
-        Object endDate = map.get("endDate");
-        if (endDate != null && !"".equals(endDate))
-            wrapper.eq(TbUserInfo::getEndDate, endDate);
-        Object userStatus = map.get("userStatus");
-        if (userStatus != null && !"".equals(userStatus))
-            wrapper.eq(TbUserInfo::getUserStatus, userStatus);
         Object userFullName = map.get("userFullName");
         if (userFullName != null && !"".equals(userFullName))
             wrapper.like(TbUserInfo::getUserFullName, map.get("userFullName"));
+        Object startDate = map.get("startDate");
+        Object endDate = map.get("endDate");
+        Object userStatus = map.get("userStatus");
+        if (userStatus != null && !"".equals(userStatus))
+        {
+            wrapper.eq(TbUserInfo::getUserStatus, userStatus);
+            if("0".equals(userStatus) && endDate != null && !"".equals(endDate))
+            {
+                wrapper.gt(TbUserInfo::getEndDate, endDate);
+                wrapper.lt(TbUserInfo::getStartDate, endDate);
+            }
+            else if("1".equals(userStatus))
+            {
+                if(endDate != null && !"".equals(endDate))
+                    wrapper.le(TbUserInfo::getEndDate, endDate);
+                if(startDate != null && !"".equals(startDate))
+                    wrapper.ge(TbUserInfo::getEndDate, startDate);
+            }
+            else if("2".equals(userStatus))
+            {
+                if(endDate != null && !"".equals(endDate))
+                    wrapper.le(TbUserInfo::getStartDate, endDate);
+                if(startDate != null && !"".equals(startDate))
+                    wrapper.ge(TbUserInfo::getStartDate, startDate);
+            }
+        }
+
         return tbUserInfoMapper.selectList(wrapper);
     }
 }

@@ -5,7 +5,7 @@
     <select id="addUserCount" resultType="com.huayun.cms.entity.UserStatus">
         SELECT A.DATE date, COUNT(START_DATE) count
         FROM
-        (SELECT * FROM CALENDAR WHERE DATE &gt; #{startDate} AND DATE &lt; #{endDate}) A
+        (SELECT * FROM CALENDAR WHERE DATE &gt;= #{startDate} AND DATE &lt;= #{endDate}) A
         LEFT JOIN
         (SELECT START_DATE FROM TB_USER_INFO) AS B
         ON LEFT(B.START_DATE, 7) = A.DATE
@@ -16,7 +16,7 @@
     <select id="cancelUserCount" resultType="com.huayun.cms.entity.UserStatus">
         SELECT A.DATE date, COUNT(END_DATE) count
         FROM
-        (SELECT * FROM CALENDAR WHERE DATE &gt; #{startDate} AND DATE &lt; #{endDate}) A
+        (SELECT * FROM CALENDAR WHERE DATE &gt;= #{startDate} AND DATE &lt;= #{endDate}) A
         LEFT JOIN
         (SELECT END_DATE FROM TB_USER_INFO) AS B
         ON LEFT(B.END_DATE, 7) = A.DATE
@@ -27,7 +27,7 @@
     <select id="currentUserCount" resultType="com.huayun.cms.entity.UserStatus">
         SELECT A.DATE date, COUNT(END_DATE) count
         FROM
-        (SELECT * FROM CALENDAR WHERE DATE &gt; #{startDate} AND DATE &lt; #{endDate}) A
+        (SELECT * FROM CALENDAR WHERE DATE &gt;= #{startDate} AND DATE &lt;= #{endDate}) A
         LEFT JOIN
         (SELECT END_DATE FROM TB_USER_INFO) AS B
         ON LEFT(B.END_DATE, 7) &lt; A.DATE
