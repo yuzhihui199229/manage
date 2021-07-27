@@ -5,11 +5,9 @@ import com.huayun.cms.entity.Result;
 import com.huayun.cms.entity.Status;
 import com.huayun.cms.service.ITbDataSyncService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.util.Map;
 
 /**
  * <p>
@@ -29,5 +27,11 @@ public class TbDataSyncController {
     @GetMapping("/selectList")
     public Result selectList() {
         return new Result(Status.SUCCESS.getCode(), Status.SUCCESS.getMessage(), dataSyncService.selectList());
+    }
+
+    @PostMapping("/syncUserInfo")
+    public Result syncUserInfo(@RequestBody Map<String, Object> map) {
+        int i = dataSyncService.syncUserInfo(map);
+        return new Result(Status.SUCCESS.getCode(), Status.SUCCESS.getMessage());
     }
 }

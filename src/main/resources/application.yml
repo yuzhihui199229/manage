@@ -5,9 +5,9 @@ spring:
     name: switches
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/level2_user_login?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    url: jdbc:mysql://192.168.5.232:3306/level2_user_login?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
     username: root
-    password: root
+    password: 123456
 mybatis:
   mapper-locations: classpath:mapper/cms/*.xml
   type-aliases-package: com.huayun.cms.entity

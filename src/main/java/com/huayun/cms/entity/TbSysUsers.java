@@ -3,6 +3,8 @@ package com.huayun.cms.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -22,12 +24,14 @@ public class TbSysUsers implements Serializable {
     /**
      * 用户名
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @TableId("USER_NAME")
     private String userName;
 
     /**
      * 用户密码
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @TableField("USER_PASSWORD")
     private String userPassword;
 

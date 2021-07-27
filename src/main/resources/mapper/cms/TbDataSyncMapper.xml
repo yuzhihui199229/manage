@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.huayun.cms.mapper.TbDataSyncMapper">
-
+    <update id="syncUserInfo">
+        CALL sync_userInfo(#{date}, #{sysName}, #{center});
+    </update>
 </mapper>

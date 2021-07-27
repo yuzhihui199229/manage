@@ -7,7 +7,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -24,5 +29,12 @@ public class TbDataSyncServiceImpl extends ServiceImpl<TbDataSyncMapper, TbDataS
 
     public List<TbDataSync> selectList() {
         return tbDataSyncMapper.selectList(null);
+    }
+
+    public int syncUserInfo(Map<String, Object> map) {
+        SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf.format(new Date());
+        map.put("date",date);
+        return tbDataSyncMapper.syncUserInfo(map);
     }
 }

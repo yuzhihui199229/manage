@@ -2,13 +2,17 @@ package com.huayun.cms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.huayun.cms.entity.TbUserInfo;
+import com.huayun.cms.entity.UserStatus;
 import com.huayun.cms.mapper.TbUserInfoMapper;
 import com.huayun.cms.service.ITbUserInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Wrapper;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +29,7 @@ public class TbUserInfoServiceImpl extends ServiceImpl<TbUserInfoMapper, TbUserI
     @Autowired
     private TbUserInfoMapper tbUserInfoMapper;
 
+    @Transactional
     public List<TbUserInfo> selectList(Map<String, Object> map) {
         LambdaQueryWrapper<TbUserInfo> wrapper = new LambdaQueryWrapper<>();
         Object marketPermission = map.get("marketPermission");
@@ -58,5 +63,30 @@ public class TbUserInfoServiceImpl extends ServiceImpl<TbUserInfoMapper, TbUserI
         }
 
         return tbUserInfoMapper.selectList(wrapper);
+    }
+
+    @Override
+    public List<Map<String, Object>> userInfo(Map<String, Object> map) {
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        List<UserStatus> addUserCount = tbUserInfoMapper.addUserCount(map);
+        List<UserStatus> cancelUserCount = tbUserInfoMapper.cancelUserCount(map);
+        List<UserStatus> currentUserCount = tbUserInfoMapper.currentUserCount(map);
+        for (int i = 0; i < addUserCount.size(); i++) {
+            Map<String,Object> userInfoMap=new HashMap<>();
+            userInfoMap.put("date",addUserCount.get(i).getDate());
+            userInfoMap.put("addUserCount",addUserCount.get(i).getCount());
+            if (cancelUserCount.get(i).getDate().equals(userInfoMap.get("date"))) {
+                userInfoMap.put("cancelUserCount", cancelUserCount.get(i).getCount());
+            } else {
+                userInfoMap.put("cancelUserCount", 0);
+            }
+            if (currentUserCount.get(i).getDate().equals(userInfoMap.get("date"))) {
+                userInfoMap.put("currentUserCount", currentUserCount.get(i).getCount());
+            } else {
+                userInfoMap.put("currentUserCount", 0);
+            }
+            resultList.add(userInfoMap);
+        }
+        return resultList;
     }
 }

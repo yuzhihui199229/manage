@@ -1,5 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.huayun.cms.mapper.TbUserInfoMapper">
+    <!--新增客户数量-->
+    <select id="addUserCount" resultType="com.huayun.cms.entity.UserStatus">
+        SELECT A.DATE date, COUNT(START_DATE) count
+        FROM
+        (select date_format(`date`, '%Y-%m') DATE
+        from (select adddate('1970-01-01', interval t2.i * 100 + t1.i * 10 + t0.i month) `date`
+        from (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union
+        select 6 union select 7 union select 8 union select 9) t0,
+        (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union
+        select 6 union select 7 union select 8 union select 9) t1,
+        (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union
+        select 6 union select 7 union select 8 union select 9) t2) a
+        where `date` between date('2021-1-1') and date('2021-11-1')) A
+        LEFT JOIN
+        (SELECT START_DATE FROM TB_USER_INFO) AS B
+        ON LEFT(B.START_DATE, 7) = A.DATE
+        GROUP BY A.DATE ORDER BY A.DATE ASC;
+    </select>
 
+    <!--注销客户数量-->
+    <select id="cancelUserCount" resultType="com.huayun.cms.entity.UserStatus">
+        SELECT A.DATE date, COUNT(END_DATE) count
+        FROM
+        (select date_format(`date`, '%Y-%m') DATE
+        from (select adddate('1970-01-01', interval t2.i * 100 + t1.i * 10 + t0.i month) `date`
+        from (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union
+        select 6 union select 7 union select 8 union select 9) t0,
+        (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union
+        select 6 union select 7 union select 8 union select 9) t1,
+        (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union
+        select 6 union select 7 union select 8 union select 9) t2) a
+        where `date` between date('2021-1-1') and date('2021-11-1')) A
+        LEFT JOIN
+        (SELECT END_DATE FROM TB_USER_INFO) AS B
+        ON LEFT(B.END_DATE, 7) = A.DATE
+        GROUP BY A.DATE ORDER BY A.DATE ASC;
+    </select>
+
+    <!--当前用户数量-->
+    <select id="currentUserCount" resultType="com.huayun.cms.entity.UserStatus">
+        SELECT A.DATE date, COUNT(END_DATE) count
+        FROM
+        (select date_format(`date`, '%Y-%m') DATE
+        from (select adddate('1970-01-01', interval t2.i * 100 + t1.i * 10 + t0.i month) `date`
+        from (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union
+        select 6 union select 7 union select 8 union select 9) t0,
+        (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union
+        select 6 union select 7 union select 8 union select 9) t1,
+        (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union
+        select 6 union select 7 union select 8 union select 9) t2) a
+        where `date` between date('2021-1-1') and date('2021-11-1')) A
+        LEFT JOIN
+        (SELECT END_DATE FROM TB_USER_INFO) AS B
+        ON LEFT(B.END_DATE, 7) &lt; A.DATE
+        GROUP BY A.DATE ORDER BY A.DATE ASC;
+    </select>
 </mapper>

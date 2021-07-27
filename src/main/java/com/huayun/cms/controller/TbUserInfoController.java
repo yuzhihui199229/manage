@@ -28,4 +28,9 @@ public class TbUserInfoController{
     public Result selectList(@RequestBody Map<String, Object> map) {
         return new Result(Status.SUCCESS.getCode(), Status.SUCCESS.getMessage(), tbUserInfoService.selectList(map));
     }
+
+    @PostMapping("userInfo")
+    public Result userInfo(@RequestBody Map<String, Object> map) {
+        return new Result(Status.SUCCESS.getCode(), Status.SUCCESS.getMessage(),tbUserInfoService.userInfo(map));
+    }
 }

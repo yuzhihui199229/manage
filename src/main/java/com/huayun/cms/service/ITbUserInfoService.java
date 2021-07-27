@@ -16,4 +16,6 @@ import java.util.Map;
  */
 public interface ITbUserInfoService extends IService<TbUserInfo> {
     List<TbUserInfo> selectList(Map<String,Object> map);
+
+    List<Map<String, Object>> userInfo(Map<String, Object> map);
 }

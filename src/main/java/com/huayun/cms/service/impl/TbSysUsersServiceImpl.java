@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author yuzh
@@ -22,14 +22,15 @@ import java.util.Map;
  */
 @Service
 public class TbSysUsersServiceImpl extends ServiceImpl<TbSysUsersMapper, TbSysUsers> implements ITbSysUsersService {
-@Autowired
-private TbSysUsersMapper tbSysUsersMapper;
+    @Autowired
+    private TbSysUsersMapper tbSysUsersMapper;
 
     @Override
     public List<TbSysUsers> selectList(Map<String, Object> map) {
-        LambdaQueryWrapper<TbSysUsers> wrapper=new LambdaQueryWrapper();
+        LambdaQueryWrapper<TbSysUsers> wrapper = new LambdaQueryWrapper();
         String password = CodeDigest.encryption((String) map.get("userPassword"));
-        wrapper.eq(TbSysUsers::getUserName, map.get("userName"))
+        wrapper.select(TbSysUsers::getUserRole)
+                .eq(TbSysUsers::getUserName, map.get("userName"))
                 .eq(TbSysUsers::getUserPassword, password);
         return tbSysUsersMapper.selectList(wrapper);
     }
