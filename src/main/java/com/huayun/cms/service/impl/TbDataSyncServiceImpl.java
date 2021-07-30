@@ -30,10 +30,10 @@ public class TbDataSyncServiceImpl extends ServiceImpl<TbDataSyncMapper, TbDataS
     private TbDataSyncMapper tbDataSyncMapper;
 
     public List<TbDataSync> selectList() {
-        LambdaQueryWrapper<TbDataSync> wrapper = new LambdaQueryWrapper();
+        /*LambdaQueryWrapper<TbDataSync> wrapper = new LambdaQueryWrapper();
         wrapper.select(TbDataSync::getCenter,TbDataSync::getSysName,TbDataSync::getSyncDate,
-                TbDataSync::getSyncTime,TbDataSync::getDbUser,TbDataSync::getDbConn);
-        return tbDataSyncMapper.selectList(wrapper);
+                TbDataSync::getSyncTime,TbDataSync::getDbUser,TbDataSync::getDbConn);*/
+        return tbDataSyncMapper.selectList(null);
     }
 
     public int syncUserInfo(Map<String, Object> map) {
