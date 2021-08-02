@@ -42,8 +42,6 @@ public class TbDataSyncController {
 
     @PostMapping("/syncUserInfo")
     @Transactional
-    @Async
-    @Scheduled(cron = "0 0 20 * * ?")
     public Result syncUserInfo(@RequestBody Map<String, Object> map) {
         try {
             loginInfoService.syncUserLoginInfo();
