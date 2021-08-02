@@ -106,6 +106,8 @@ public class TbUserInfoServiceImpl extends ServiceImpl<TbUserInfoMapper, TbUserI
     @Autowired
     private TbDataSyncMapper tbDataSyncMapper;
 
+    @Async
+    @Scheduled(cron = "0 0 20 * * ?")
     public void syncUserInfo() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm:ss");

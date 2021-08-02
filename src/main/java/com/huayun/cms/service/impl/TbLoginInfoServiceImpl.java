@@ -68,7 +68,10 @@ public class TbLoginInfoServiceImpl extends ServiceImpl<TbLoginInfoMapper, TbLog
     @Autowired
     private TbDataSyncMapper tbDataSyncMapper;
 
+
     @Override
+    @Async
+    @Scheduled(cron = "0 0 20 * * ?")
     public void syncUserLoginInfo() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm:ss");
