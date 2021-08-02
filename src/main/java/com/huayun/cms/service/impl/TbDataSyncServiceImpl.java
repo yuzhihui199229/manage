@@ -1,11 +1,13 @@
 package com.huayun.cms.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.huayun.cms.entity.TbDataSync;
 import com.huayun.cms.mapper.TbDataSyncMapper;
 import com.huayun.cms.service.ITbDataSyncService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,6 +29,12 @@ public class TbDataSyncServiceImpl extends ServiceImpl<TbDataSyncMapper, TbDataS
     @Autowired
     private TbDataSyncMapper tbDataSyncMapper;
 
+    private TbDataSync dataSync;
+
+    public TbDataSync getDataSync() {
+        return dataSync;
+    }
+
     public List<TbDataSync> selectList() {
         return tbDataSyncMapper.selectList(null);
     }
@@ -37,4 +45,5 @@ public class TbDataSyncServiceImpl extends ServiceImpl<TbDataSyncMapper, TbDataS
         map.put("date",date);
         return tbDataSyncMapper.syncUserInfo(map);
     }
+
 }

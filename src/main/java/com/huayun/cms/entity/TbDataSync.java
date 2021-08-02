@@ -61,5 +61,11 @@ public class TbDataSync implements Serializable {
     @TableField("DB_CONN")
     private String dbConn;
 
+    /**
+     * 数据库连接
+     */
+    @TableField("DRIVER")
+    private String driver;
+
 
 }

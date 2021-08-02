@@ -25,7 +25,7 @@ public class TbDataSyncController {
     private ITbDataSyncService dataSyncService;
 
     @GetMapping("/selectList")
-    public Result selectList() {
+    public Result selectList(Map<String,Object> map) {
         return new Result(Status.SUCCESS.getCode(), Status.SUCCESS.getMessage(), dataSyncService.selectList());
     }
 

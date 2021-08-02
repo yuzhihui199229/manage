@@ -2,4 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.huayun.cms.mapper.TbLoginInfoMapper">
 
+    <insert id="replaceUserLoginInfo">
+        REPLACE INTO TB_LOGIN_INFO(
+            SYS_NAME,
+            LOGIN_ID,
+            CENTER,
+            USER_NAME,
+            LOGIN_STATUS,
+            LOGIN_DATE,
+            LOGIN_TIME,
+            LOGIN_SESSION,
+            LOGIN_IP,
+            SERVER_IP,
+            REMARK)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.sysName},
+            #{item.loginId},
+            #{item.center},
+            #{item.userName},
+            #{item.loginStatus},
+            #{item.loginDate},
+            #{item.loginTime},
+            #{item.loginSession},
+            #{item.loginIp},
+            #{item.serverIp},
+            #{item.remark}
+            )
+        </foreach>
+    </insert>
 </mapper>

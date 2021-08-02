@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author yuzh
@@ -16,4 +16,6 @@ import java.util.Map;
  */
 public interface ITbLoginInfoService extends IService<TbLoginInfo> {
     List<TbLoginInfo> selectList(Map<String, Object> map);
+
+    int syncUserLoginInfo();
 }

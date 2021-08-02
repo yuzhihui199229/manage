@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.huayun.cms.mapper.TbUserInfoMapper">
+    <insert id="replaceUserInfo">
+        REPLACE INTO TB_USER_INFO(
+            SYS_NAME,
+            USER_NAME,
+            USER_PASSWORD,
+            CENTER,
+            USER_STATUS,
+            USER_FULL_NAME,
+            USER_IP,
+            MARKET_PERMISSION,
+            DATA_PERMISSION,
+            START_DATE,
+            END_DATE
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.sysName},
+            #{item.userName},
+            #{item.userPassword},
+            #{item.center},
+            #{item.userStatus},
+            #{item.userFullName},
+            #{item.userIp},
+            #{item.marketPermission},
+            #{item.dataPermission},
+            #{item.startDate},
+            #{item.endDate}
+            )
+        </foreach>
+    </insert>
     <!--新增客户数量-->
     <select id="addUserCount" resultType="com.huayun.cms.entity.UserStatus">
         SELECT A.DATE date, COUNT(START_DATE) count

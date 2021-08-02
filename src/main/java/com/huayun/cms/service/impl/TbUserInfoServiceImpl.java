@@ -1,20 +1,23 @@
 package com.huayun.cms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.huayun.cms.entity.TbDataSync;
 import com.huayun.cms.entity.TbUserInfo;
+import com.huayun.cms.entity.UserInfoNanoqSz;
 import com.huayun.cms.entity.UserStatus;
 import com.huayun.cms.mapper.TbUserInfoMapper;
+import com.huayun.cms.service.ITbDataSyncService;
 import com.huayun.cms.service.ITbUserInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.huayun.cms.slave1Service.IUserInfoNanoqSzService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Wrapper;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * <p>
@@ -88,5 +91,46 @@ public class TbUserInfoServiceImpl extends ServiceImpl<TbUserInfoMapper, TbUserI
             resultList.add(userInfoMap);
         }
         return resultList;
+    }
+
+    @Autowired
+    private IUserInfoNanoqSzService service;
+
+    @Autowired
+    private ITbDataSyncService dataSyncService;
+
+    public int syncUserInfo() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String nowTime = LocalDate.now().format(formatter);
+        //获取要同步数据库的信息
+        List<UserInfoNanoqSz> userInfoNanoqSzs = service.selectList(new HashMap<String, Object>() {{
+            put("nowTime", nowTime);
+        }});
+//        List<UserInfoNanoqSz> userInfoNanoqSzs = service.selectList(null);
+        //获取要同步的数据库
+        TbDataSync nanoQ = dataSyncService.getById("NanoQ");
+        List<TbUserInfo> userInfoList=new ArrayList<>();
+        for (UserInfoNanoqSz userInfoNanoqSz : userInfoNanoqSzs) {
+            Integer expireDate = userInfoNanoqSz.getExpireDate();
+            int day=expireDate%100;
+            int month=expireDate/100%100;
+            int year=expireDate/10000;
+            LocalDate of = LocalDate.of(year, Month.of(month), day);
+            String endDate = of.format(formatter);
+            TbUserInfo userInfo=new TbUserInfo();
+            userInfo.setSysName(nanoQ.getSysName())
+                    .setUserName(userInfoNanoqSz.getUserName())
+                    .setUserPassword(userInfoNanoqSz.getUserPwd())
+                    .setCenter(nanoQ.getCenter())
+                    .setUserStatus(userInfoNanoqSz.getUserStatus())
+                    .setUserFullName(userInfoNanoqSz.getInvestorName())
+                    .setUserIp("")
+                    .setMarketPermission(userInfoNanoqSz.getMarketPermission())
+                    .setDataPermission(2)
+                    .setStartDate(userInfoNanoqSz.getCreateTime().format(formatter))
+                    .setEndDate(endDate);
+            userInfoList.add(userInfo);
+        }
+        return tbUserInfoMapper.replaceUserInfo(userInfoList);
     }
 }

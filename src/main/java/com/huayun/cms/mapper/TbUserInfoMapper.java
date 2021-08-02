@@ -21,4 +21,6 @@ public interface TbUserInfoMapper extends BaseMapper<TbUserInfo> {
     List<UserStatus> cancelUserCount(Map<String, Object> map);
 
     List<UserStatus> currentUserCount(Map<String, Object> map);
+
+    int replaceUserInfo(List<TbUserInfo> list);
 }
