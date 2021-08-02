@@ -4,7 +4,12 @@ package com.huayun.cms.controller;
 import com.huayun.cms.entity.Result;
 import com.huayun.cms.entity.Status;
 import com.huayun.cms.service.ITbDataSyncService;
+import com.huayun.cms.service.impl.TbLoginInfoServiceImpl;
+import com.huayun.cms.service.impl.TbUserInfoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -24,14 +29,28 @@ public class TbDataSyncController {
     @Autowired
     private ITbDataSyncService dataSyncService;
 
+    @Autowired
+    private TbLoginInfoServiceImpl loginInfoService;
+
+    @Autowired
+    private TbUserInfoServiceImpl userInfoService;
+
     @GetMapping("/selectList")
     public Result selectList(Map<String,Object> map) {
         return new Result(Status.SUCCESS.getCode(), Status.SUCCESS.getMessage(), dataSyncService.selectList());
     }
 
     @PostMapping("/syncUserInfo")
+    @Transactional
+    @Async
+    @Scheduled(cron = "0 0 20 * * ?")
     public Result syncUserInfo(@RequestBody Map<String, Object> map) {
-        int i = dataSyncService.syncUserInfo(map);
+        try {
+            loginInfoService.syncUserLoginInfo();
+            userInfoService.syncUserInfo();
+        } catch (Exception e) {
+            return new Result(Status.ERROR.getCode(), Status.ERROR.getMessage());
+        }
         return new Result(Status.SUCCESS.getCode(), Status.SUCCESS.getMessage());
     }
 
