@@ -13,7 +13,7 @@
 
     <!--删除同步数据-->
     <update id="deleteSyncUserInfo">
-        DELETE FROM TB_DATA_SYNC WHERE SYS_NAME= #{sysName} AND CENTER = {center}
+        DELETE FROM TB_DATA_SYNC WHERE SYS_NAME= #{sysName} AND CENTER = #{center}
             AND SYNC_DATE = #{syncDate};
     </update>
 
