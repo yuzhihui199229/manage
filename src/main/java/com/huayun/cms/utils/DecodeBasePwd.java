@@ -1,29 +1,29 @@
-﻿package com.huayun.cms.utils;
+package com.huayun.cms.utils;
+
 
 import java.util.Base64;
-import java.util.Base64.Decoder;
 
 public class DecodeBasePwd {
     /**
-     * @param base64 密文
-     * @return 明文
+     * @param cipherData ??
+     * @return ??
      */
-    public static  String getDecode(String cipherData) {
+    public static  String getDecodeBasePwd(String cipherData) {
         String re_base64 = new String();
         try {
-            /* BASE64加密
+            /* BASE64??
             Base64.Encoder encoder = Base64.getEncoder();
             byte[] data = encoder.encode(cipherData.getBytes());
-            System.out.println("BASE64加密：" + new String(data));
-            // 或者采用以下方法，但是不赞成使用该方法，源码也做了@deprecation标记
-            System.out.println("BASE64加密：" + encoder.encodeToString(DATA.getBytes()));
+            System.out.println("BASE64???" + new String(data));
+            // ?????????????????????????@deprecation??
+            System.out.println("BASE64???" + encoder.encodeToString(DATA.getBytes()));
             */
-            // BASE64解密
+            // BASE64??
             Base64.Decoder decoder = Base64.getDecoder();
             byte[] bytes = decoder.decode(cipherData.getBytes());
-            re_base64 = bytes.toString();
+            re_base64 = new String(bytes);
         } catch (Exception e) {
-            System.out.println("BASE64加解密异常");
+            System.out.println("BASE64?????");
             e.printStackTrace();
         }
         return re_base64;

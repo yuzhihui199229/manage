@@ -13,7 +13,7 @@
         select 6 union select 7 union select 8 union select 9) t1,
         (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union
         select 6 union select 7 union select 8 union select 9) t2) a
-        where `date` betweten date(#{startDae}) and date(#{endDate})) A
+        where `date` betweten date(#{startDate}) and date(#{endDate})) A
         LEFT JOIN
         (SELECT START_DATE FROM TB_USER_INFO) AS B
         ON LEFT(B.START_DATE, 7) = A.DATE
@@ -32,7 +32,7 @@
         select 6 union select 7 union select 8 union select 9) t1,
         (select 0 i union select 1 union select 2 union select 3 union select 4 union select 5 union
         select 6 union select 7 union select 8 union select 9) t2) a
-        where `date` betweten date(#{startDae}) and date(#{endDate})) A
+        where `date` betweten date(#{startDate}) and date(#{endDate})) A
         LEFT JOIN
         (SELECT END_DATE FROM TB_USER_INFO) AS B
         ON LEFT(B.END_DATE, 7) = A.DATE

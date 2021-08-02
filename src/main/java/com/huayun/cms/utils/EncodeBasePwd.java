@@ -1,16 +1,11 @@
 package com.huayun.cms.utils;
 
-import org.springframework.stereotype.Component;
 
 import java.util.Base64;
-import java.util.Base64.Encoder;
+ // import java.util.Base64.Encoder;
 
 public class EncodeBasePwd {
-    /**
-     * @param base64 明文
-     * @return 密文
-     */
-    public static  String getEecode(String obviousData) {
+    public static  String getEncodeBasePwd(String obviousData) {
         String re_base64 = new String();
         try {
             //BASE64加密
