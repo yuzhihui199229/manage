@@ -1,11 +1,13 @@
 package com.huayun.cms.service.impl;
 
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.huayun.cms.entity.TbDataSync;
 import com.huayun.cms.entity.TbSysUsers;
 import com.huayun.cms.mapper.TbDataSyncMapper;
 import com.huayun.cms.service.ITbDataSyncService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.huayun.cms.utils.EncodeBasePwd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +47,9 @@ public class TbDataSyncServiceImpl extends ServiceImpl<TbDataSyncMapper, TbDataS
 
 
     public int replaceSyncUserInfo(Map<String, Object> map) {
+       /* String date = map.get("dbPwd").toString();
+        String rstruts = EncodeBasePwd.getEecode(date);
+        map.put("dbPwd",rstruts);*/
         return tbDataSyncMapper.replaceSyncUserInfo(map);
     }
 

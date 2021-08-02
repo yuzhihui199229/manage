@@ -1,14 +1,14 @@
-package com.huayun.cms.utils;
+﻿package com.huayun.cms.utils;
 
 import java.util.Base64;
 import java.util.Base64.Decoder;
 
-public class DecodeBase {
+public class DecodeBasePwd {
     /**
      * @param base64 密文
      * @return 明文
      */
-    public  String getDecode(String cipherData) {
+    public static  String getDecode(String cipherData) {
         String re_base64 = new String();
         try {
             /* BASE64加密
