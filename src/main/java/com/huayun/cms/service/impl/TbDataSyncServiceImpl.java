@@ -42,4 +42,13 @@ public class TbDataSyncServiceImpl extends ServiceImpl<TbDataSyncMapper, TbDataS
         map.put("date",date);
         return tbDataSyncMapper.syncUserInfo(map);
     }
+
+
+    public int replaceSyncUserInfo(Map<String, Object> map) {
+        return tbDataSyncMapper.replaceSyncUserInfo(map);
+    }
+
+    public int deleteSyncUserInfo(Map<String, Object> map) {
+        return tbDataSyncMapper.deleteSyncUserInfo(map);
+    }
 }

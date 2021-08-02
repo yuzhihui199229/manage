@@ -34,4 +34,16 @@ public class TbDataSyncController {
         int i = dataSyncService.syncUserInfo(map);
         return new Result(Status.SUCCESS.getCode(), Status.SUCCESS.getMessage());
     }
+
+    @PostMapping("/replaceSyncUserInfo")
+    public Result replaceSyncUserInfo(@RequestBody Map<String, Object> map) {
+        int i = dataSyncService.replaceSyncUserInfo(map);
+        return new Result(Status.SUCCESS.getCode(), Status.SUCCESS.getMessage());
+    }
+
+    @PostMapping("/deleteSyncUserInfo")
+    public Result deleteSyncUserInfo(@RequestBody Map<String, Object> map) {
+        int i = dataSyncService.deleteSyncUserInfo(map);
+        return new Result(Status.SUCCESS.getCode(), Status.SUCCESS.getMessage());
+    }
 }

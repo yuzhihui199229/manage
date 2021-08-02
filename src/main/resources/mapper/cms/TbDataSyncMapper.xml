@@ -4,4 +4,17 @@
     <update id="syncUserInfo">
         CALL sync_userInfo(#{date}, #{sysName}, #{center});
     </update>
+
+    <!--新增，修改，同步数据-->
+    <update id="replaceSyncUserInfo">
+        REPLACE INTO TB_DATA_SYNC(SYS_NAME,CENTER,SYNC_DATE,SYNC_TIME,DB_USER,DB_PWD,DB_CONN)
+        VALUES (#{sysName}, #{center}, #{syncDate}, #{syncTime}, #{dbUser}, #{dbPwd}, #{dbConn});
+    </update>
+
+    <!--删除同步数据-->
+    <update id="deleteSyncUserInfo">
+        DELETE FROM TB_DATA_SYNC WHERE SYS_NAME= #{sysName} AND CENTER = {center}
+            AND SYNC_DATE = #{syncDate};
+    </update>
+
 </mapper>
