@@ -15,4 +15,8 @@ import java.util.Map;
  */
 public interface TbDataSyncMapper extends BaseMapper<TbDataSync> {
     int syncUserInfo(Map<String,Object> map);
+
+    int replaceSyncUserInfo(Map<String,Object> map);
+
+    int deleteSyncUserInfo(Map<String,Object> map);
 }

@@ -2,6 +2,7 @@ package com.huayun.cms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.huayun.cms.entity.TbDataSync;
+import com.huayun.cms.entity.TbSysUsers;
 import com.huayun.cms.mapper.TbDataSyncMapper;
 import com.huayun.cms.service.ITbDataSyncService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -44,6 +45,15 @@ public class TbDataSyncServiceImpl extends ServiceImpl<TbDataSyncMapper, TbDataS
         String date = sdf.format(new Date());
         map.put("date",date);
         return tbDataSyncMapper.syncUserInfo(map);
+    }
+
+
+    public int replaceSyncUserInfo(Map<String, Object> map) {
+        return tbDataSyncMapper.replaceSyncUserInfo(map);
+    }
+
+    public int deleteSyncUserInfo(Map<String, Object> map) {
+        return tbDataSyncMapper.deleteSyncUserInfo(map);
     }
 
 }
