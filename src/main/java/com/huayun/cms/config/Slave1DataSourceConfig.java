@@ -3,6 +3,7 @@ package com.huayun.cms.config;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.huayun.cms.entity.TbDataSync;
 import com.huayun.cms.service.ITbDataSyncService;
+import com.huayun.cms.utils.DecodeBasePwd;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -30,7 +31,7 @@ public class Slave1DataSourceConfig {
         builder.driverClassName(slaveInfo.getDriver());
         builder.url(slaveInfo.getDbConn());
         builder.username(slaveInfo.getDbUser());
-        builder.password(slaveInfo.getDbPwd());
+        builder.password(DecodeBasePwd.getDecodeBasePwd(slaveInfo.getDbPwd()));
         return builder.build();
     }
 
