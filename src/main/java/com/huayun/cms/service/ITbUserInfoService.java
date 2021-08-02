@@ -19,5 +19,5 @@ public interface ITbUserInfoService extends IService<TbUserInfo> {
 
     List<Map<String, Object>> userInfo(Map<String, Object> map);
 
-    int syncUserInfo();
+    void syncUserInfo();
 }

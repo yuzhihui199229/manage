@@ -4,6 +4,7 @@ import com.huayun.cms.ManageApplication;
 import com.huayun.cms.entity.TbLoginInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,5 +16,5 @@ import java.util.Map;
  * @since 2021-07-20
  */
 public interface TbLoginInfoMapper extends BaseMapper<TbLoginInfo> {
-int replaceUserLoginInfo(Map<String,Object> map);
+int replaceUserLoginInfo(List<TbLoginInfo> list);
 }

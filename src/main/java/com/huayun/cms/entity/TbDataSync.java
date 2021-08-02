@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -15,6 +16,7 @@ import lombok.EqualsAndHashCode;
  * @since 2021-07-27
  */
 @Data
+@Accessors(chain = true)
 public class TbDataSync implements Serializable {
 
     private static final long serialVersionUID = 1L;

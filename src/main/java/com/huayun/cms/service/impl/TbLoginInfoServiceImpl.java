@@ -1,7 +1,10 @@
 package com.huayun.cms.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.huayun.cms.entity.*;
+import com.huayun.cms.mapper.TbDataSyncMapper;
 import com.huayun.cms.mapper.TbLoginInfoMapper;
 import com.huayun.cms.service.ITbDataSyncService;
 import com.huayun.cms.service.ITbLoginInfoService;
@@ -9,9 +12,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huayun.cms.slave1Service.IUserInfoNanoqSzService;
 import com.huayun.cms.slave1Service.impl.UserLoginInfoNanoqSzServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -58,39 +65,57 @@ public class TbLoginInfoServiceImpl extends ServiceImpl<TbLoginInfoMapper, TbLog
     @Autowired
     private ITbDataSyncService dataSyncService;
 
+    @Autowired
+    private TbDataSyncMapper tbDataSyncMapper;
+
+    @Async
+    @Scheduled(cron = "0 0 20 * * ?")
     @Override
-    public int syncUserLoginInfo() {
+    public void syncUserLoginInfo() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String nowTime = LocalDate.now().format(formatter);
+        DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        //当前日期
+        String nowTime = now.format(formatter);
+        //当前时间
+        String time = now.format(formatterTime);
         //获取要同步的数据库
         TbDataSync nanoQ = dataSyncService.getById("NanoQ");
         //获取要同步数据库的信息
         List<UserLoginInfoNanoqSz> userLoginInfoNanoqSzs = service.selectList(new HashMap<String, Object>() {{
             put("nowTime", nowTime);
         }});
-//        List<UserInfoNanoqSz> userInfoNanoqSzs = service.selectList(null);
-        List<TbUserInfo> userInfoList=new ArrayList<>();
+        List<TbLoginInfo> userLoginInfoList=new ArrayList<>();
         for (UserLoginInfoNanoqSz userLoginInfoNanoqSz : userLoginInfoNanoqSzs) {
-//            Integer expireDate = userLoginInfoNanoqSzs.getExpireDate();
-//            int day=expireDate%100;
-//            int month=expireDate/100%100;
-//            int year=expireDate/10000;
-//            LocalDate of = LocalDate.of(year, Month.of(month), day);
-//            String endDate = of.format(formatter);
-//            TbUserInfo userInfo=new TbUserInfo();
-//            userInfo.setSysName(nanoQ.getSysName())
-//                    .setUserName(userInfoNanoqSz.getUserName())
-//                    .setUserPassword(userInfoNanoqSz.getUserPwd())
-//                    .setCenter(nanoQ.getCenter())
-//                    .setUserStatus(userInfoNanoqSz.getUserStatus())
-//                    .setUserFullName(userInfoNanoqSz.getInvestorName())
-//                    .setUserIp("")
-//                    .setMarketPermission(userInfoNanoqSz.getMarketPermission())
-//                    .setDataPermission(2)
-//                    .setStartDate(userInfoNanoqSz.getCreateTime().format(formatter))
-//                    .setEndDate(endDate);
-//            userInfoList.add(userInfo);
+            String clientInfo = userLoginInfoNanoqSz.getClientInfo();
+            String loginIp="";
+            if (StringUtils.hasLength(clientInfo)) {
+                String[] strings = clientInfo.split("\\|");
+                if (strings.length > 2) {
+                    loginIp=strings[2];
+                }
+            }
+            TbLoginInfo loginInfo=new TbLoginInfo();
+            loginInfo.setSysName(nanoQ.getSysName())
+                    .setLoginId(userLoginInfoNanoqSz.getLoginId())
+                    .setCenter(nanoQ.getCenter())
+                    .setUserName(userLoginInfoNanoqSz.getUserName())
+                    .setLoginStatus(userLoginInfoNanoqSz.getLoginStatus())
+                    .setLoginDate(userLoginInfoNanoqSz.getLoginTime().format(formatter))
+                    .setLoginTime(userLoginInfoNanoqSz.getLoginTime().format(formatterTime))
+                    .setLoginSession(userLoginInfoNanoqSz.getSessionId().intValue())
+                    .setLoginIp(loginIp)
+                    .setServerIp(userLoginInfoNanoqSz.getAccessIp())
+                    .setRemark(userLoginInfoNanoqSz.getRemark());
+            userLoginInfoList.add(loginInfo);
         }
-        return /*tbLoginInfoMapper.replaceUserInfo(userInfoList)*/0;
+
+        TbDataSync dataSync=new TbDataSync();
+        dataSync.setSysName(nanoQ.getSysName())
+                .setCenter(nanoQ.getCenter())
+                .setSyncDate(nowTime)
+                .setSyncTime(time);
+        tbDataSyncMapper.updateById(dataSync);
+        tbLoginInfoMapper.replaceUserLoginInfo(userLoginInfoList);
     }
 }

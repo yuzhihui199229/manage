@@ -17,5 +17,5 @@ import java.util.Map;
 public interface ITbLoginInfoService extends IService<TbLoginInfo> {
     List<TbLoginInfo> selectList(Map<String, Object> map);
 
-    int syncUserLoginInfo();
+    void  syncUserLoginInfo();
 }

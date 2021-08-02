@@ -5,16 +5,20 @@ import com.huayun.cms.entity.TbDataSync;
 import com.huayun.cms.entity.TbUserInfo;
 import com.huayun.cms.entity.UserInfoNanoqSz;
 import com.huayun.cms.entity.UserStatus;
+import com.huayun.cms.mapper.TbDataSyncMapper;
 import com.huayun.cms.mapper.TbUserInfoMapper;
 import com.huayun.cms.service.ITbDataSyncService;
 import com.huayun.cms.service.ITbUserInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.huayun.cms.slave1Service.IUserInfoNanoqSzService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -99,9 +103,19 @@ public class TbUserInfoServiceImpl extends ServiceImpl<TbUserInfoMapper, TbUserI
     @Autowired
     private ITbDataSyncService dataSyncService;
 
-    public int syncUserInfo() {
+    @Autowired
+    private TbDataSyncMapper tbDataSyncMapper;
+
+    @Async
+    @Scheduled(cron = "0 0 20 * * ?")
+    public void syncUserInfo() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String nowTime = LocalDate.now().format(formatter);
+        DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        //当前时间
+        String time = now.format(formatterTime);
+        //当前日期
+        String nowTime = now.format(formatter);
         //获取要同步数据库的信息
         List<UserInfoNanoqSz> userInfoNanoqSzs = service.selectList(new HashMap<String, Object>() {{
             put("nowTime", nowTime);
@@ -131,6 +145,12 @@ public class TbUserInfoServiceImpl extends ServiceImpl<TbUserInfoMapper, TbUserI
                     .setEndDate(endDate);
             userInfoList.add(userInfo);
         }
-        return tbUserInfoMapper.replaceUserInfo(userInfoList);
+        TbDataSync dataSync=new TbDataSync();
+        dataSync.setSysName(nanoQ.getSysName())
+                .setCenter(nanoQ.getCenter())
+                .setSyncDate(nowTime)
+                .setSyncTime(time);
+        tbDataSyncMapper.updateById(dataSync);
+        tbUserInfoMapper.replaceUserInfo(userInfoList);
     }
 }

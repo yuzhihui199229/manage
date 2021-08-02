@@ -3,6 +3,7 @@ package com.huayun.cms.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -15,6 +16,7 @@ import java.io.Serializable;
  * @since 2021-07-20
  */
 @Data
+@Accessors(chain = true)
 public class TbLoginInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
