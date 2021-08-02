@@ -1,11 +1,9 @@
 package com.huayun.cms.mapper;
 
-import com.huayun.cms.ManageApplication;
 import com.huayun.cms.entity.TbLoginInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>

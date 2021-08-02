@@ -36,7 +36,7 @@ public class TbDataSyncController {
     private TbUserInfoServiceImpl userInfoService;
 
     @GetMapping("/selectList")
-    public Result selectList(Map<String,Object> map) {
+    public Result selectList(Map<String, Object> map) {
         return new Result(Status.SUCCESS.getCode(), Status.SUCCESS.getMessage(), dataSyncService.selectList());
     }
 
@@ -44,8 +44,10 @@ public class TbDataSyncController {
     @Transactional
     public Result syncUserInfo(@RequestBody Map<String, Object> map) {
         try {
-            loginInfoService.syncUserLoginInfo();
-            userInfoService.syncUserInfo();
+            if ("NanoQ".equals(map.get("sysName"))&&"SZ".equals(map.get("CENTER"))) {
+                loginInfoService.syncUserLoginInfo();
+                userInfoService.syncUserInfo();
+            }
         } catch (Exception e) {
             return new Result(Status.ERROR.getCode(), Status.ERROR.getMessage());
         }
